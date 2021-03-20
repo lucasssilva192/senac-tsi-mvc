@@ -23,7 +23,7 @@
 
 @section('sidebar')       
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark primary-color menu ">
+<nav class="navbar navbar-expand-lg navbar-dark primary-color menu fixed-top">
   <!-- Navbar brand -->
   <a class="navbar-brand" href="#">ICON FICARÁ AQUI</a>
   <!-- Collapse button -->
