@@ -1,4 +1,4 @@
-@extends('layouts.interno')
+@extends('layouts.index')
 @section('title', 'TESTE')
 @section('sidebar')
 

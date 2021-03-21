@@ -21,6 +21,10 @@ Route::get('/pi',function(){
     return view('pi');
 });
 
+Route::get('/home',function(){
+    return view('home');
+});
+
 Route::get('/avisos', function(){
     return view('avisos', [ 'nome' => 'Lucas Santos Silva', 
                             'mostrar' => true,
