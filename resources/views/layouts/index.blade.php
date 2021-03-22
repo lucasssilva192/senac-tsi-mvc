@@ -55,7 +55,7 @@
     </ul>
     <!-- Links -->
       <div class="md-form my-0">
-        <button href="#"> Login </button>
+        <input type="button" class="btn btn-primary" href="#"> Login </input>
       </div>
   </div>
   <!-- Collapsible content -->
