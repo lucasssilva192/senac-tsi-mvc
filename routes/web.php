@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ClientesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,17 @@ Route::get('/avisos', function(){
                                         [ 'id' => 3,
                                           'texto' => 'Nosso recesso de final de ano será de 23/12/2021 até 09/01/2022 ']]]);
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['prefix' => 'clientes'], function (){
+
+    Route::get('/listar', [App\Http\Controllers\ClientesController::class, 'listar'])->middleware('auth');
+}); 
+
+Route::group(['prefix' => 'funcionarios'], function (){
+
+    Route::get('/listar', [App\Http\Controllers\FuncionariosController::class, 'listar'])->middleware('auth');
+}); 
