@@ -49,14 +49,16 @@
 
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Senha:</strong>
-           </div>
+            <strong>X:</strong>
+           
+        </div>
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-12">
         <div class="form-group">
-            <strong>Confirme a senha:</strong>
-           </div>
+            <strong>X:</strong>
+
+        </div>
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-12">

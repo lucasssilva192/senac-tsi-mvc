@@ -8,7 +8,7 @@
             <h2>Clientes</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-success" href="{{ route('clientes.create') }}"> + Novo usuário</a>
+            <a class="btn btn-success" href="{{ route('clientes.create') }}"> + Novo cliente</a>
         </div>
     </div>
 </div>
@@ -35,25 +35,25 @@
    <th width="280px">Ação</th>
  </tr>
 
- @foreach ($data as $key => $user)
+ @foreach ($data as $key => $cliente)
 
   <tr>
     <td>{{ ++$i }}</td>
-    <td>{{ $cliente->nome }}</td>
+    <td>{{ $cliente->name }}</td>
     <td>{{ $cliente->email }}</td>
     <td>{{ $cliente->endereco }}</td>
     <td>{{ $cliente->nascimento }}</td>
     <td>
 
-    @if(!empty($cliente->getRoleNames()))
+      @if(!empty($cliente->getRoleNames()))
 
-@foreach($cliente->getRoleNames() as $v)
+        @foreach($cliente->getRoleNames() as $v)
 
-   <label class="badge badge-success">{{ $v }}</label>
+           <label class="badge badge-success">{{ $v }}</label>
 
-@endforeach
+        @endforeach
 
-@endif
+      @endif
 
     </td>
 
@@ -61,7 +61,7 @@
        <a class="btn btn-info" href="{{ route('clientes.show',$cliente->id) }}">Mostrar</a>
        <a class="btn btn-primary" href="{{ route('clientes.edit',$cliente->id) }}">Editar</a>
 
-        {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $user->id],'style'=>'display:inline']) !!}
+        {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $cliente->id],'style'=>'display:inline']) !!}
 
             {!! Form::submit('Apagar', ['class' => 'btn btn-danger']) !!}
 

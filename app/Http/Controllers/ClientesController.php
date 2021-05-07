@@ -15,6 +15,14 @@ class ClientesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function listar()
+    {
+    	$clientes = Clientes::all();
+
+    	return view('clientes.listar', ['clientes' => $clientes]);
+    }
+
     public function index(Request $request)
     {
         $qtd_por_pagina = 5;
