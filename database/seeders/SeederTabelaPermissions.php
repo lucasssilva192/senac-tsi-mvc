@@ -21,7 +21,11 @@ class SeederTabelaPermissions extends Seeder
                         'cliente-list',
                         'cliente-create',
                         'cliente-edit',
-                        'cliente-delete'];
+                        'cliente-delete',
+                        'produto-list',
+                        'produto-create',
+                        'produto-edit',
+                        'produto-delete',];
 
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
-    
+    /*
     public function __construct()
 	{
 		$this->middleware('permission:user-list',['only' => ['index','show']]);
@@ -20,6 +20,7 @@ class UserController extends Controller
 		$this->middleware('permission:user-edit',['only' => ['edit','update']]);
 		$this->middleware('permission:user-delete',['only' => ['destroy']]);
 	}
+    */
 
     /**
      * Display a listing of the resource.

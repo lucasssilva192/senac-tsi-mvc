@@ -1,50 +1,47 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Produtos;
 use Illuminate\Http\Request;
-use App\Models\Clientes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ClientesController extends Controller
+class ProdutosController extends Controller
 {
     use HasFactory;
     use HasRoles;
+
+    /*
+    public function __construct()
+	{
+		$this->middleware('permission:produto-list',['only' => ['index','show']]);
+		$this->middleware('permission:produto-create',['only' => ['create','store']]);
+		$this->middleware('permission:produto-edit',['only' => ['edit','update']]);
+		$this->middleware('permission:produto-delete',['only' => ['destroy']]);
+	}
+    */
+
+    public function listar(){
+        $produtos = Produtos::all();
+    	return view('produtos.listar', ['produtos' => $produtos]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
-    /*
-    public function __construct()
-	{
-		$this->middleware('permission:cliente-list',['only' => ['index','show']]);
-		$this->middleware('permission:cliente-create',['only' => ['create','store']]);
-		$this->middleware('permission:cliente-edit',['only' => ['edit','update']]);
-		$this->middleware('permission:cliente-delete',['only' => ['destroy']]);
-	}
-    */
-
-
-    public function listar()
-    {
-    	$clientes = Clientes::all();
-
-    	return view('clientes.listar', ['clientes' => $clientes]);
-    }
-
     public function index(Request $request)
     {
         $qtd_por_pagina = 5;
 
-        $data = Clientes::orderBy('id', 'DESC')->paginate($qtd_por_pagina);
+        $data = Produtos::orderBy('id', 'DESC')->paginate($qtd_por_pagina);
 
-        return view('clientes.index',
+        return view('produtos.index',
                 compact('data'))->
                 with('i', ($request->input('page', 1) -1 ) * $qtd_por_pagina );
     }
@@ -57,7 +54,7 @@ class ClientesController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        return view('clientes.create', compact('roles'));
+        return view('produtos.create', compact('roles'));
     }
 
     /**
@@ -69,11 +66,15 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,
-                        ['nome' => 'required',
-                         'email' => 'required|email|unique:users,email']);
+        ['nome' => 'required',
+         'preco' => 'required',
+         'descricao' => 'required']);
+
         $input = $request->all();
-        Clientes::create($input);
-        return redirect()->route('clientes.index')->with('success', 'Cliente criado com sucesso');
+
+        Produtos::create($input);
+
+        return redirect()->route('produtos.index')->with('success', 'Produto criado com sucesso');
     }
 
     /**
@@ -84,8 +85,8 @@ class ClientesController extends Controller
      */
     public function show($id)
     {
-        $cliente = Clientes::find($id);
-        return view('clientes.show', compact('cliente'));
+        $produto = Produtos::find($id);
+        return view('produtos.show', compact('produto'));
     }
 
     /**
@@ -96,9 +97,9 @@ class ClientesController extends Controller
      */
     public function edit($id)
     {
-        $cliente = Clientes::find($id);
+        $produto = Produtos::find($id);
 
-        return view('clientes.edit', compact('cliente'));
+        return view('produtos.edit', compact('produto'));
     }
 
     /**
@@ -112,11 +113,13 @@ class ClientesController extends Controller
     {
         $this->validate($request,
                         ['nome' => 'required',
-                        'email' => 'required|email']);
+                         'preco' => 'required',
+                         'descricao' => 'required']);
         $input = $request->all();
-        $cliente = Clientes::find($id);
-        $cliente->update($input);
-        return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso');
+        $produto = Produtos::find($id);
+        $produto->update($input);
+        return redirect()->route('produtos.index')->with('success', 'Produto atualizado com sucesso');
+
     }
 
     /**
@@ -127,7 +130,8 @@ class ClientesController extends Controller
      */
     public function destroy($id)
     {
-        Clientes::find($id)->delete();
-        return redirect()->route('clientes.index')->with('success', 'Cliente removido com sucesso');
+        Produtos::find($id)->delete();
+        return redirect()->route('produtos.index')->with('success', 'Produto removido com sucesso');
+ 
     }
 }
