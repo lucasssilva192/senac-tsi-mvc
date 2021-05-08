@@ -3,18 +3,31 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Clientes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Arr;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
 
 class ClientesController extends Controller
 {
+    use HasFactory;
+    use HasRoles;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct()
+	{
+		$this->middleware('permission:cliente-list',['only' => ['index','show']]);
+		$this->middleware('permission:cliente-create',['only' => ['create','store']]);
+		$this->middleware('permission:cliente-edit',['only' => ['edit','update']]);
+		$this->middleware('permission:cliente-delete',['only' => ['destroy']]);
+	}
+
 
     public function listar()
     {
@@ -42,7 +55,7 @@ class ClientesController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        return view('clientes.create', compact($roles));
+        return view('clientes.create', compact('roles'));
     }
 
     /**
@@ -53,15 +66,12 @@ class ClientesController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validade($request,
+        $this->validate($request,
                         ['nome' => 'required',
-                         'endereco' => 'required',
-                         'email' => 'required|email|unique:clientes,email',
-                         'nascimento' => 'required']);
+                         'email' => 'required|email|unique:users,email']);
         $input = $request->all();
-        $user = Clientes::create($input);
-        //$user->assignRole( $request->input('roles'));
-        return redirect()->route('clientes.index')->with('success', 'Usuário criado com sucesso');
+        Clientes::create($input);
+        return redirect()->route('clientes.index')->with('success', 'Cliente criado com sucesso');
     }
 
     /**
@@ -85,9 +95,8 @@ class ClientesController extends Controller
     public function edit($id)
     {
         $cliente = Clientes::find($id);
-        $roles = Role::pluck('name', 'name')->all();
-        $clienteRole = $cliente->roles->pluck('name', 'name')->all();
-        return view('clientes.edit', compact('cliente', 'roles', 'clienteRole'));
+
+        return view('clientes.edit', compact('cliente'));
     }
 
     /**
@@ -99,15 +108,12 @@ class ClientesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validade($request,
-                        ['name' => 'required',
-                        'email' => 'required|email|unique:users,email',
-                        'roles' => 'required']);
+        $this->validate($request,
+                        ['nome' => 'required',
+                        'email' => 'required|email']);
         $input = $request->all();
         $cliente = Clientes::find($id);
         $cliente->update($input);
-        DB::table('model_has_roles')->where('model id', $id)->delete();
-        $cliente->assignRole($request->input('roles'));
         return redirect()->route('clientes.index')->with('success', 'Cliente atualizado com sucesso');
     }
 

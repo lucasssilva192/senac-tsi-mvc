@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
+    
+    public function __construct()
+	{
+		$this->middleware('permission:user-list',['only' => ['index','show']]);
+		$this->middleware('permission:user-create',['only' => ['create','store']]);
+		$this->middleware('permission:user-edit',['only' => ['edit','update']]);
+		$this->middleware('permission:user-delete',['only' => ['destroy']]);
+	}
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +45,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name', 'name')->all();
-        return view('users.create', compact($roles));
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -46,7 +56,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validade($request,
+        $this->validate($request,
                         ['name' => 'required',
                          'email' => 'required|email|unique:users,email',
                          'password' => 'required|same:confirm-password',
@@ -93,9 +103,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validade($request,
+        $this->validate($request,
                         ['name' => 'required',
-                        'email' => 'required|email|unique:users,email',
+                        'email' => 'required|email',
                         'password' => 'required|same:confirm-password',
                         'roles' => 'required']);
         $input = $request->all();
@@ -108,7 +118,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         $user->update($input);
-        DB::table('model_has_roles')->where('model id', $id)->delete();
+        DB::table('model_has_roles')->where('model_id', $id)->delete();
         $user->assignRole($request->input('roles'));
         return redirect()->route('users.index')->with('success', 'Usuario atualizado com sucesso');
     }
