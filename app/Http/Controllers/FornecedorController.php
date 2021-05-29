@@ -7,6 +7,8 @@ use App\Models\Fornecedor;
 
 class FornecedorController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +17,14 @@ class FornecedorController extends Controller
     public function index()
     {
         return Fornecedor::all();
+    }   
+
+    public function getFornecedor(int $id)
+    {
+        $fornecedor = Fornecedor::find($id);
+        return $fornecedor;
     }
+
 
     /**
      * Show the form for creating a new resource.

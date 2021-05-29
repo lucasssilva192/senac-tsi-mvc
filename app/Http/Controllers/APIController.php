@@ -27,7 +27,6 @@ class APIController extends Controller
     }
 
     public function logout(Request $request){
-        $this->validate($request, ['token' => 'required']);
         try{
             JWTAuth::invalidate($request->token);
             return response()->json(['success' => true,

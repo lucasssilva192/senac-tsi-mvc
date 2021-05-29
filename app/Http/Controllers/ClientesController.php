@@ -31,6 +31,18 @@ class ClientesController extends Controller
     */
 
 
+    public function getCliente(int $id)
+    {
+        $cliente = Clientes::find($id);
+        return $cliente;
+    }
+
+    public function checkCliente(int $id)
+    {
+        $cliente = Clientes::find($id);
+        return $cliente;
+    }
+
     public function listar()
     {
     	$clientes = Clientes::all();
